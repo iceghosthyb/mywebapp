@@ -28,10 +28,11 @@ jobs:
       - name: Run Tests
         run: go test -v ./...
 
+      - name: install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
       - name: Run golangci-lint 静态检查-代码规范检查
-        run: ｜
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          golangci-lint run .
+        run: golangci-lint run .
 
       - name: Run gosec 安全扫描
         run: |
