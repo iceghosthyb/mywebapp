@@ -35,8 +35,15 @@ jobs:
 #      - name: Set working directory
 #        working-directory: ${{ github.workspace }}  # 显式设置根目录
 
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s
+          echo "$(pwd)/bin" >> $GITHUB_PATH
+
       - name: Run golangci-lint 静态检查-代码规范检查
-        run: golangci-lint run .
+        run: ｜
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          golangci-lint run .
 
       - name: Run gosec 安全扫描
         run: |
