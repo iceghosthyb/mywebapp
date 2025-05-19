@@ -1,0 +1,46 @@
+name: CITests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23.1'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run Tests
+        run: go test -v ./...
+
+  deploy-and-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start Server
+        run: |
+          nohup go run main.go & echo $! > server.pid
+          sleep 5  # 等待服务启动
+
+      - name: Test API
+        run: |
+          curl -X GET http://localhost:8080/users | jq .
+          curl -X POST http://localhost:8080/users \
+            -H "Content-Type: application/json" \
+            -d '{"name":"test","email":"test@example.com"}' | jq .
+
+      - name: Stop Server
+        if: always()
+        run: kill $(cat server.pid) || true
