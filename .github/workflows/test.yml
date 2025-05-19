@@ -27,8 +27,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Set working directory
-        working-directory: ${{ github.workspace }}  # 显式设置根目录
+#      - name: Set working directory
+#        working-directory: ${{ github.workspace }}  # 显式设置根目录
 
       - name: Run golangci-lint 静态检查-代码规范检查
         run: golangci-lint run ./...
