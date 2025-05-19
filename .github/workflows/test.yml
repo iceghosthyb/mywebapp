@@ -27,9 +27,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Run golangci-lint：静态检查-代码规范检查
-        working-directory: ${{ github.workspace }}/your_module_path
-        run: golangci-lint run
+      - name: Set working directory
+        working-directory: ${{ github.workspace }}  # 显式设置根目录
+
+      - name: Run golangci-lint 静态检查-代码规范检查
+        run: golangci-lint run ./...
 
       - name: Run gosec 安全扫描
         run: |
