@@ -36,12 +36,12 @@ jobs:
 #        working-directory: ${{ github.workspace }}  # 显式设置根目录
 
       - name: Run golangci-lint 静态检查-代码规范检查
-        run: golangci-lint run ./...
+        run: golangci-lint run .
 
       - name: Run gosec 安全扫描
         run: |
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          gosec -exclude=G104 ./...  # 排除特定规则检查
+          gosec -exclude=G104 .  # 排除特定规则检查
 
       - name: Format check 代码格式化
         run: |
