@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  pre-check:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,6 +17,16 @@ jobs:
         with:
           go-version: '1.23.1'
 
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run Tests
+        run: go test -v ./...
+
+  static_check:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Run golangci-lint：静态检查-代码规范检查
         uses: golangci/golangci-lint-action@v3
         with:
@@ -37,12 +47,6 @@ jobs:
           go mod verify
           go mod tidy -v
           git diff --exit-code go.mod go.sum
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Run Tests
-        run: go test -v ./...
 
   deploy-and-test:
     needs: build
