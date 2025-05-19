@@ -12,6 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 查看当前目录下内容
+        run: |
+          pwd
+          ls 
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
